@@ -1,13 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proyecto Final</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="index.js"> </script>
 </head>
 <body>
-    
+    <main>
+        <svg class="icon">
+            <use href="#icon-arrow"></use>
+        </svg>
+
+        <svg class="icon">
+            <use href="#icon-star"></use>
+        </svg>
+
+        <svg class="icon">
+            <use href="#icon-home"></use>
+        </svg>
+    </main>
+    <script src="index.js"> </script>
 </body>
 </html>
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <!-- First icon -->
+    <symbol id="icon-arrow" viewBox="0 0 24 24">
+      <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path>
+    </symbol>
+    
+    <!-- Second icon -->
+    <symbol id="icon-star" viewBox="0 0 24 24">
+      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"></path>
+    </symbol>
+    
+    <!-- Add more symbols as needed -->
+    <symbol id="icon-home" viewBox="0 0 24 24">
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path>
+    </symbol>
+  </svg>
