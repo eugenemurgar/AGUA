@@ -1,13 +1,372 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proyecto Final</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="index.js"> </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Code Space Grid Hub</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: black;
+      height: 100%;
+    }
+
+    .viewport {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      cursor: grab;
+    }
+
+    .zoom-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      transform-origin: center center;
+      transition: transform 0.1s ease;
+    }
+
+    .grid-stack {
+      position: relative;
+      width: 85vmin;
+      height: 85vmin;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(17, 1fr);
+      grid-template-rows: repeat(17, 1fr);
+      width: 85vmin;
+      height: 85vmin;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 10;
+    }
+
+    .icon {
+      grid-column: 9;
+      grid-row: 9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .icon svg {
+      width: 100%;
+      height: 100%;
+      fill: white;
+    }
+
+    .button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .button svg {
+      width: 100%;
+      height: 100%;
+      fill: white;
+    }
+
+    .hover-overlay {
+      position: absolute;
+      width: 90%;
+      height: 90%;
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .hover-overlay img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .button:hover .hover-overlay {
+      opacity: 1;
+    }
+
+    /* Reveal Grid Styles */
+    .reveal-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 85vmin;
+      height: 85vmin;
+      z-index: 1;
+    }
+
+    .reveal-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('patron153.svg') center/contain no-repeat;
+      image-rendering: pixelated;
+    }
+
+    .reveal-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+    }
+  </style>
 </head>
 <body>
-    
+  <div class="viewport" id="viewport">
+    <div class="zoom-container" id="zoomContainer">
+      <div class="grid-stack">
+        <!-- Reveal Grid (positioned behind button grid) -->
+        <div class="reveal-container">
+          <div class="reveal-background"></div>
+          <canvas class="reveal-canvas" id="revealCanvas"></canvas>
+        </div>
+
+        <!-- Button Grid -->
+      <div class="grid" id="grid">
+        <div class="icon">
+          <svg viewBox="0 0 100 100">
+            <rect x="0" y="0" width="100" height="100" />
+          </svg>
+        </div>
+
+        <!-- Buttons -->
+        <div class="button persona8" style="grid-column: 10; grid-row: 7;"></div>
+        <div class="button persona8" style="grid-column: 11; grid-row: 5;"></div>
+        <div class="button persona8" style="grid-column: 10; grid-row: 4;"></div>
+        <div class="button persona8" style="grid-column: 12; grid-row: 4;"></div>
+        <div class="button persona8" style="grid-column: 11; grid-row: 3;"></div>
+        <div class="button persona8" style="grid-column: 13; grid-row: 3;"></div>
+        <div class="button persona8" style="grid-column: 10; grid-row: 2;"></div>
+        <div class="button persona8" style="grid-column: 12; grid-row: 2;"></div>
+        <div class="button persona8" style="grid-column: 11; grid-row: 1;"></div>
+        <div class="button persona6" style="grid-column: 11; grid-row: 8;"></div>
+        <div class="button persona6" style="grid-column: 13; grid-row: 7;"></div>
+        <div class="button persona6" style="grid-column: 14; grid-row: 6;"></div>
+        <div class="button persona6" style="grid-column: 14; grid-row: 8;"></div>
+        <div class="button persona6" style="grid-column: 15; grid-row: 5;"></div>
+        <div class="button persona6" style="grid-column: 15; grid-row: 7;"></div>
+        <div class="button persona6" style="grid-column: 16; grid-row: 6;"></div>
+        <div class="button persona6" style="grid-column: 16; grid-row: 8;"></div>
+        <div class="button persona6" style="grid-column: 17; grid-row: 7;"></div>
+        <div class="button Bianca" style="grid-column: 11; grid-row: 10;"></div>
+        <div class="button Bianca" style="grid-column: 13; grid-row: 11;"></div>
+        <div class="button Bianca" style="grid-column: 14; grid-row: 10;"></div>
+        <div class="button Bianca" style="grid-column: 14; grid-row: 12;"></div>
+        <div class="button Bianca" style="grid-column: 15; grid-row: 11;"></div>
+        <div class="button Bianca" style="grid-column: 15; grid-row: 13;"></div>
+        <div class="button Bianca" style="grid-column: 16; grid-row: 10;"></div>
+        <div class="button Bianca" style="grid-column: 16; grid-row: 12;"></div>
+        <div class="button Bianca" style="grid-column: 17; grid-row: 11;"></div>
+        <div class="button Mauricio" style="grid-column: 13; grid-row: 15;"></div>
+        <div class="button Mauricio" style="grid-column: 10; grid-row: 11;"></div>
+        <div class="button Mauricio" style="grid-column: 11; grid-row: 13;"></div>
+        <div class="button Mauricio" style="grid-column: 10; grid-row: 14;"></div>
+        <div class="button Mauricio" style="grid-column: 12; grid-row: 14;"></div>
+        <div class="button Mauricio" style="grid-column: 11; grid-row: 15;"></div>
+        <div class="button Mauricio" style="grid-column: 10; grid-row: 16;"></div>
+        <div class="button Mauricio" style="grid-column: 12; grid-row: 16;"></div>
+        <div class="button Mauricio" style="grid-column: 11; grid-row: 17;"></div>
+        <div class="button Mateo" style="grid-column: 8; grid-row: 11;"></div>
+        <div class="button Mateo" style="grid-column: 7; grid-row: 13;"></div>
+        <div class="button Mateo" style="grid-column: 6; grid-row: 14;"></div>
+        <div class="button Mateo" style="grid-column: 8; grid-row: 14;"></div>
+        <div class="button Mateo" style="grid-column: 5; grid-row: 15;"></div>
+        <div class="button Mateo" style="grid-column: 7; grid-row: 15;"></div>
+        <div class="button Mateo" style="grid-column: 6; grid-row: 16;"></div>
+        <div class="button Mateo" style="grid-column: 8; grid-row: 16;"></div>
+        <div class="button Mateo" style="grid-column: 7; grid-row: 17;"></div>
+        <div class="button claudia" style="grid-column: 7; grid-row: 10;"></div>
+        <div class="button claudia" style="grid-column: 2; grid-row: 10;"></div>
+        <div class="button claudia" style="grid-column: 4; grid-row: 10;"></div>
+        <div class="button claudia" style="grid-column: 1; grid-row: 11;"></div>
+        <div class="button claudia" style="grid-column: 3; grid-row: 11;"></div>
+        <div class="button claudia" style="grid-column: 5; grid-row: 11;"></div>
+        <div class="button claudia" style="grid-column: 2; grid-row: 12;"></div>
+        <div class="button claudia" style="grid-column: 4; grid-row: 12;"></div>
+        <div class="button claudia" style="grid-column: 3; grid-row: 13;"></div>
+        <div class="button georgy" style="grid-column: 7; grid-row: 8;"></div>
+        <div class="button georgy" style="grid-column: 3; grid-row: 5;"></div>
+        <div class="button georgy" style="grid-column: 2; grid-row: 6;"></div>
+        <div class="button georgy" style="grid-column: 4; grid-row: 6;"></div>
+        <div class="button georgy" style="grid-column: 1; grid-row: 7;"></div>
+        <div class="button georgy" style="grid-column: 3; grid-row: 7;"></div>
+        <div class="button georgy" style="grid-column: 5; grid-row: 7;"></div>
+        <div class="button georgy" style="grid-column: 2; grid-row: 8;"></div>
+        <div class="button georgy" style="grid-column: 4; grid-row: 8;"></div>
+        <div class="button gene" style="grid-column: 7; grid-row: 1;"></div>
+        <div class="button gene" style="grid-column: 6; grid-row: 2;"></div>
+        <div class="button gene" style="grid-column: 8; grid-row: 2;"></div>
+        <div class="button gene" style="grid-column: 5; grid-row: 3;"></div>
+        <div class="button gene" style="grid-column: 7; grid-row: 3;"></div>
+        <div class="button gene" style="grid-column: 6; grid-row: 4;"></div>
+        <div class="button gene" style="grid-column: 8; grid-row: 4;"></div>
+        <div class="button gene" style="grid-column: 7; grid-row: 5;"></div>
+        <div class="button gene" style="grid-column: 8; grid-row: 7;"></div>
+
+        <!-- Shared Button Content -->
+        <template id="button-template">
+          <svg viewBox="0 0 100 100">
+            <rect x="0" y="0" width="100" height="100" />
+          </svg>
+          <div class="hover-overlay">
+            <img src="https://via.placeholder.com/100" alt="Placeholder Image" />
+          </div>
+        </template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const zoomContainer = document.getElementById('zoomContainer');
+    let scale = 12;
+    let isPanning = false;
+    let startX, startY, translateX = 0, translateY = 0;
+    zoomContainer.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+
+    // Zoom functionality
+    window.addEventListener('wheel', (event) => {
+      event.preventDefault();
+      const zoomFactor = 0.1;
+      if (event.deltaY < 0) {
+        scale += zoomFactor;
+      } else {
+        scale = Math.max(0.1, scale - zoomFactor);
+      }
+      zoomContainer.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+    }, { passive: false });
+
+    const viewport = document.getElementById('viewport');
+
+    // Panning functionality
+    viewport.addEventListener('mousedown', (e) => {
+      isPanning = true;
+      startX = e.clientX - translateX;
+      startY = e.clientY - translateY;
+      viewport.style.cursor = 'grabbing';
+    });
+
+    viewport.addEventListener('mouseup', () => {
+      isPanning = false;
+      viewport.style.cursor = 'grab';
+    });
+
+    viewport.addEventListener('mouseleave', () => {
+      isPanning = false;
+      viewport.style.cursor = 'grab';
+    });
+
+    viewport.addEventListener('mousemove', (e) => {
+      if (!isPanning) return;
+      translateX = e.clientX - startX;
+      translateY = e.clientY - startY;
+      zoomContainer.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+    });
+
+    // Populate buttons with template content
+    document.querySelectorAll('.button').forEach(button => {
+      const template = document.getElementById('button-template');
+      button.innerHTML = template.innerHTML;
+    });
+
+    // Reveal grid functionality
+    const canvas = document.getElementById('revealCanvas');
+    const ctx = canvas.getContext('2d');
+    const GRID_SIZE = 153;
+    let revealed = new Set();
+
+    function updateCanvasSize() {
+      const container = canvas.parentElement;
+      const rect = container.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      drawGrid();
+    }
+
+    function drawGrid() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'black';
+
+      const cellSize = canvas.width / GRID_SIZE;
+
+      for (let y = 0; y < GRID_SIZE; y++) {
+        for (let x = 0; x < GRID_SIZE; x++) {
+          const key = `${x},${y}`;
+          if (!revealed.has(key)) {
+            ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+          }
+        }
+      }
+    }
+
+    function revealAtMouse(e) {
+      const rect = canvas.getBoundingClientRect();
+      const containerRect = canvas.parentElement.getBoundingClientRect();
+      
+      // Calculate mouse position relative to the canvas
+      const mx = e.clientX - containerRect.left;
+      const my = e.clientY - containerRect.top;
+
+      const cellSize = canvas.width / GRID_SIZE;
+      const radiusCells = 2; // Fixed radius of 2 cells as specified
+      const radiusPx = radiusCells * cellSize;
+
+      for (let y = 0; y < GRID_SIZE; y++) {
+        for (let x = 0; x < GRID_SIZE; x++) {
+          const cx = x * cellSize + cellSize / 2;
+          const cy = y * cellSize + cellSize / 2;
+          const dx = mx - cx;
+          const dy = my - cy;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist <= radiusPx) {
+            revealed.add(`${x},${y}`);
+          }
+        }
+      }
+
+      drawGrid();
+    }
+
+    // Initialize reveal canvas
+    setTimeout(() => {
+      updateCanvasSize();
+    }, 100);
+
+    window.addEventListener('resize', () => {
+      setTimeout(updateCanvasSize, 100);
+    });
+
+    // Make the entire zoom container listen for mouse events to reveal
+    zoomContainer.addEventListener('mousemove', revealAtMouse);
+
+    // Update canvas size when zoom changes
+    const originalTransform = zoomContainer.style.transform;
+    const observer = new MutationObserver(() => {
+      if (zoomContainer.style.transform !== originalTransform) {
+        setTimeout(updateCanvasSize, 50);
+      }
+    });
+    observer.observe(zoomContainer, { attributes: true, attributeFilter: ['style'] });
+  </script>
 </body>
 </html>
